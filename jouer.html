@@ -226,6 +226,9 @@
     var answerHtml = m.answer
       ? '<div class="answer-form"><input type="text" id="answerInput" placeholder="Votre réponse..."><button type="button" id="answerSubmit">Valider</button></div><div id="answerFeedback"></div>'
       : '';
+    var nextHtml = m.nextMissionId
+      ? '<button type="button" id="nextMissionBtn" style="width:100%;margin-top:6px;background:var(--rust);color:var(--cream-text);border:none;border-radius:4px;padding:12px;font-weight:600;font-size:14px;cursor:pointer;">Mission suivante →</button>'
+      : '';
     return '' +
       '<p class="mnum">Mission ' + escapeHtml(String(m.missionNumber || '')) + '</p>' +
       '<h2>' + escapeHtml(m.title || 'Sans titre') + '</h2>' +
@@ -233,7 +236,8 @@
       mediaBlockHtml(m) +
       (m.instructions ? '<div class="mission-instructions">' + escapeHtml(m.instructions) + '</div>' : '') +
       hintHtml +
-      answerHtml;
+      answerHtml +
+      nextHtml;
   }
 
   function bindMission(m){
@@ -264,6 +268,12 @@
       };
       ansBtn.addEventListener('click', submit);
       input.addEventListener('keydown', function(e){ if(e.key === 'Enter') submit(); });
+    }
+    var nextBtn = document.getElementById('nextMissionBtn');
+    if(nextBtn && m.nextMissionId){
+      nextBtn.addEventListener('click', function(){
+        location.hash = '#m=' + encodeURIComponent(m.nextMissionId);
+      });
     }
   }
 

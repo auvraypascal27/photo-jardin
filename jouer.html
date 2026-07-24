@@ -80,6 +80,50 @@
   }
   .pin-icon.active .dot{ background: var(--gold); }
 
+  .progress-strip{
+    background: var(--parchment); border-radius:8px; padding:12px 14px;
+    margin-bottom:16px; box-shadow: 0 6px 18px -8px rgba(0,0,0,.5);
+  }
+  .progress-summary{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    cursor:pointer; user-select:none;
+  }
+  .progress-summary .ptext{ font-size:13px; font-weight:600; color: var(--ink); }
+  .progress-summary .pcount{ color: var(--rust-dark); }
+  .progress-toggle{
+    background:none; border:none; font-size:12px; color: var(--rust-dark);
+    font-weight:600; text-decoration:underline; padding:0;
+  }
+  .progress-bar{
+    height:6px; border-radius:3px; background: rgba(27,42,31,.12); margin-top:8px; overflow:hidden;
+  }
+  .progress-bar-fill{ height:100%; background: var(--rust); border-radius:3px; transition: width .3s ease; }
+  .progress-detail{ margin-top:12px; display:none; }
+  .progress-detail.open{ display:block; }
+  .progress-list{ list-style:none; margin:0 0 12px; padding:0; display:flex; flex-direction:column; gap:6px; }
+  .progress-list li{
+    display:flex; align-items:center; gap:8px; font-size:13px; color: var(--ink);
+    background: rgba(255,255,255,.5); border-radius:5px; padding:8px 10px;
+  }
+  .progress-list li a{ color:inherit; text-decoration:none; flex:1; display:flex; align-items:center; gap:8px; }
+  .progress-list .check{
+    width:18px; height:18px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
+  }
+  .progress-list li.done .check{ background: var(--forest-mid); color:#fff; }
+  .progress-list li.todo .check{ background: rgba(27,42,31,.15); color: rgba(27,42,31,.4); }
+  .progress-list li.done{ opacity:.75; }
+  .code-row{
+    display:flex; gap:6px; align-items:center; flex-wrap:wrap;
+    font-family:'Space Mono', monospace; font-size:13px; color: var(--ink);
+  }
+  .code-digit{
+    width:28px; height:28px; border-radius:5px; display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:14px;
+  }
+  .code-digit.filled{ background: var(--gold); color:#3a2a0a; }
+  .code-digit.empty{ background: rgba(27,42,31,.1); color: rgba(27,42,31,.3); }
+
   .chest-icon{ filter: drop-shadow(0 3px 4px rgba(0,0,0,.5)); }
   .chest-icon svg{ display:block; }
   .chest-icon.active{ filter: drop-shadow(0 0 6px rgba(198,154,61,.9)) drop-shadow(0 3px 4px rgba(0,0,0,.5)); }
@@ -204,6 +248,8 @@
     <p class="map-caption" id="mapCaption">Toutes les missions</p>
   </div>
 
+  <div class="progress-strip" id="progressStrip"></div>
+
   <div id="content" class="mission-card"><p class="loading">Chargement de la mission…</p></div>
 
   <p class="footer-note">Bonne chasse !</p>
@@ -238,6 +284,76 @@
       method: 'POST',
       body: JSON.stringify({ team: team, mission: missionLabel || '', answer: answer || '' })
     }).catch(function(){ /* tracking is best-effort, never block the game */ });
+  }
+
+  /* ---------- Per-device progress (private to this team's phone) ---------- */
+  var PROGRESS_KEY = 'treasure-progress-v1';
+  var progressStrip = document.getElementById('progressStrip');
+  var progressOpen = false;
+
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || { completed: {} }; }
+    catch(e){ return { completed: {} }; }
+  }
+  function saveProgress(p){
+    try{ localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); }catch(e){}
+  }
+  function markMissionComplete(m){
+    var p = loadProgress();
+    p.completed[m.id] = { number: m.missionNumber, title: m.title, digit: m.rewardDigit || '' };
+    saveProgress(p);
+    renderProgressStrip();
+  }
+  function isMissionComplete(id){
+    return !!loadProgress().completed[id];
+  }
+
+  function renderProgressStrip(){
+    if(!missions.length){ progressStrip.innerHTML = ''; return; }
+    var progress = loadProgress();
+    // The chest (mission number "0") is the intro/lock, not counted as a task to complete.
+    var tasks = missions.filter(function(m){ return String(m.missionNumber) !== '0'; });
+    if(!tasks.length){ progressStrip.innerHTML = ''; return; }
+    tasks.sort(function(a,b){
+      var na = parseFloat(a.missionNumber), nb = parseFloat(b.missionNumber);
+      if(isNaN(na) || isNaN(nb)) return 0;
+      return na - nb;
+    });
+    var doneCount = tasks.filter(function(m){ return progress.completed[m.id]; }).length;
+    var pct = Math.round((doneCount / tasks.length) * 100);
+
+    var listHtml = tasks.map(function(m){
+      var done = progress.completed[m.id];
+      return '<li class="' + (done ? 'done' : 'todo') + '">' +
+        '<a href="#m=' + encodeURIComponent(m.id) + '">' +
+          '<span class="check">' + (done ? '✓' : '') + '</span>' +
+          '<span>Mission ' + escapeHtml(String(m.missionNumber)) + (m.title ? ' — ' + escapeHtml(m.title) : '') + '</span>' +
+        '</a>' +
+      '</li>';
+    }).join('');
+
+    var codeHtml = tasks.map(function(m){
+      var done = progress.completed[m.id];
+      var digit = done && done.digit ? escapeHtml(String(done.digit)) : '';
+      return '<span class="code-digit ' + (digit ? 'filled' : 'empty') + '">' + (digit || '?') + '</span>';
+    }).join('');
+    var hasAnyDigit = tasks.some(function(m){ return progress.completed[m.id] && progress.completed[m.id].digit; });
+
+    progressStrip.innerHTML =
+      '<div class="progress-summary" id="progressToggleRow">' +
+        '<span class="ptext"><span class="pcount">' + doneCount + ' / ' + tasks.length + '</span> missions terminées</span>' +
+        '<button type="button" class="progress-toggle">' + (progressOpen ? 'Masquer ▲' : 'Voir le détail ▼') + '</button>' +
+      '</div>' +
+      '<div class="progress-bar"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="progress-detail' + (progressOpen ? ' open' : '') + '" id="progressDetail">' +
+        '<ul class="progress-list">' + listHtml + '</ul>' +
+        (hasAnyDigit ? '<div class="code-row">' + codeHtml + '</div>' : '') +
+      '</div>';
+
+    document.getElementById('progressToggleRow').addEventListener('click', function(){
+      progressOpen = !progressOpen;
+      renderProgressStrip();
+    });
   }
 
   var teamGate = document.getElementById('teamGate');
@@ -364,6 +480,7 @@
             (m.rewardDigit ? '<div class="reward-badge"><span class="digit">' + escapeHtml(String(m.rewardDigit)) + '</span> Chiffre gagné</div>' : '') +
             '</div>';
           trackEvent('Mission ' + (m.missionNumber || '') + ' — ' + (m.title || ''), input.value.trim());
+          markMissionComplete(m);
           if(m.nextMissionId){
             var slot = document.getElementById('nextMissionSlot');
             if(slot && !slot.querySelector('#nextMissionBtn')){
@@ -388,6 +505,8 @@
     content.innerHTML = missionHtml(m);
     bindMission(m);
     trackEvent('Mission ' + (m.missionNumber || '') + ' — ' + (m.title || ''), '(en cours)');
+    // Missions without a question are complete as soon as they're viewed.
+    if(!m.answer && String(m.missionNumber) !== '0'){ markMissionComplete(m); }
   }
 
   function showIndex(){
@@ -517,6 +636,7 @@
         if(!Array.isArray(list)) throw new Error('bad-format');
         missions = list;
         buildMap();
+        renderProgressStrip();
         if(pendingGoToChest){ pendingGoToChest = false; goToChest(); }
         else{ render(); }
       })

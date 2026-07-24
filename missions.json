@@ -36,8 +36,7 @@
     "failText": "",
     "qrMode": "mission",
     "showClueOnPrint": false,
-    "nextMissionId": "pzmjggzk",
-    "mediaData": ""
+    "nextMissionId": "pzmjggzk"
   },
   {
     "id": "pzmjggzk",
@@ -50,15 +49,14 @@
     "hint": "Chaque matin, les enfants attendent ici leur transport.",
     "mediaType": "video",
     "mediaSource": "url",
-    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/main/Mission%20N%C2%B02.mp4",
+    "mediaUrl": "https://github.com/auvraypascal27/photo-jardin/blob/main/Mission%20N%C2%B02.mp4",
     "answer": "71",
     "rewardDigit": "2",
     "successText": "",
     "failText": "",
     "qrMode": "mission",
     "nextMissionId": "",
-    "showClueOnPrint": false,
-    "mediaData": ""
+    "showClueOnPrint": false
   },
   {
     "id": "p2pfzneg",
@@ -71,8 +69,7 @@
     "hint": "",
     "mediaType": "image",
     "mediaSource": "url",
-    "mediaData": "",
-    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/main/Bouche%20a%20incendie.png",
+    "mediaUrl": "https://github.com/auvraypascal27/photo-jardin/edit/main/Bouche%20a%20incendie.png",
     "answer": "ROUTE des BUISSONS",
     "rewardDigit": "9",
     "successText": "",
@@ -86,20 +83,19 @@
     "lat": 49.10459606958736,
     "lng": 0.46866036951541906,
     "missionNumber": "3",
-    "title": "",
+    "title": "Le Gardien du Chemin",
     "shortDesc": "",
-    "instructions": "Le Gardien vous attend au bout du chemin...\n\nEmpruntez le chemin de droite.\n\nContinuez jusqu'à la première croisée des chemins.\n\nLà où les deux chemins se séparent, le Gardien a caché un secret...\n\nJe fais partie du chemin.\nOn me marche dessus sans jamais me remarquer.\nMais aujourd'hui, je cache le secret du Gardien.\nQui suis-je ?",
+    "instructions": "Le Gardien vous attend au bout du chemin...\n\nEmpruntez le chemin de droite.\n\nContinuez jusqu'à la première croisée des chemins.\n\nLà où les deux chemins se séparent, le Gardien a caché un secret...",
     "hint": "Je fais partie du chemin.\nOn me marche dessus sans jamais me remarquer.\nMais aujourd'hui, je cache le secret du Gardien.\nQui suis-je ?",
     "mediaType": "image",
     "mediaSource": "url",
-    "mediaData": "",
-    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/main/Capture%20d%27%C3%A9cran%202026-07-24%20121946.png",
+    "mediaUrl": "https://github.com/auvraypascal27/photo-jardin/edit/main/Capture%20d'%C3%A9cran%202026-07-24%20121946.png",
     "answer": "AVENTURIER",
     "rewardDigit": "5",
     "successText": "",
     "failText": "",
     "qrMode": "mission",
-    "nextMissionId": "",
+    "nextMissionId": "pyspp69z",
     "showClueOnPrint": false
   },
   {
@@ -113,14 +109,15 @@
     "hint": "",
     "mediaType": "none",
     "mediaSource": "upload",
-    "mediaData": "",
     "mediaUrl": "",
     "answer": "",
-    "rewardDigit": "",
+    "rewardDigit": "3",
     "successText": "",
     "failText": "",
     "qrMode": "gps",
     "nextMissionId": "p2pfzneg",
-    "showClueOnPrint": false
+    "showClueOnPrint": false,
+    "mediaData": "",
+    "hideOnPlayerMap": true
   }
 ]

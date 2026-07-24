@@ -6,7 +6,7 @@
     "missionNumber": "0",
     "title": "Le trésor",
     "shortDesc": "Le trésor est ici… mais il est verrouillé.",
-    "instructions": "Le coffre est fermé par un cadenas à 6 chiffres.\nSix missions sont réparties sur le parcours. Chaque mission vous permettra de récupérer un chiffre.\nBonne chance… le trésor vous attend !",
+    "instructions": "Le cylindre est fermé par un code à 6 lettres.\nSix missions sont réparties sur le parcours. Chaque mission vous permettra de récupérer un chiffre.\nBonne chance… le trésor vous attend !",
     "hint": "Vous pouvez réaliser les missions dans l’ordre que vous souhaitez, mais attention : pour ouvrir le cylindre , l'ordre ne fait pas toujours la solution.",
     "mediaType": "image",
     "mediaSource": "url",

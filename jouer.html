@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#122018">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Chasse au Trésor — Mission</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cinzel+Decorative:wght@700&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root{
+    --parchment:#EAE0C6;
+    --forest-deep:#122018;
+    --forest-mid:#22402A;
+    --ink:#1B2A1F;
+    --rust:#B5462E;
+    --rust-dark:#8F3521;
+    --gold:#C69A3D;
+    --gold-light:#E7CD86;
+    --cream-text:#F3ECD8;
+    --shadow: 0 30px 60px -20px rgba(0,0,0,.65);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at 20% -10%, #24462d 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 110%, #24462d 0%, transparent 50%),
+      var(--forest-deep);
+    color:var(--cream-text);
+    font-family:'Work Sans', sans-serif;
+    min-height:100vh;
+    padding: 32px 16px 60px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .wrap{ max-width: 520px; margin: 0 auto; }
+
+  .hero{ text-align:center; padding: 4px 4px 22px; }
+  .compass{ width:46px; height:46px; margin:0 auto 12px; opacity:.9; }
+  .eyebrow{
+    font-family:'Space Mono', monospace; letter-spacing:.24em; font-size:11px;
+    color: var(--gold-light); text-transform:uppercase; margin:0 0 8px;
+  }
+  h1{
+    font-family:'Cinzel Decorative','Cinzel',serif; font-weight:700;
+    font-size: clamp(22px, 6vw, 30px); line-height:1.2; margin:0;
+    color: var(--gold-light); text-shadow: 0 2px 0 rgba(0,0,0,.35);
+  }
+
+  .map-card{
+    background: var(--parchment); border-radius:8px; padding: 10px;
+    box-shadow: var(--shadow); margin-bottom: 16px;
+  }
+  #map{
+    width:100%; height: 44vh; min-height:220px; max-height:340px;
+    border-radius: 4px; border: 1px solid rgba(0,0,0,.15);
+    box-shadow: inset 0 0 0 5px rgba(234,224,198,.9), inset 0 0 20px rgba(0,0,0,.2);
+    background:#0c1710;
+  }
+  #map.leaflet-container{ font-family:'Work Sans', sans-serif; }
+  .map-caption{
+    font-family:'Space Mono', monospace; font-size:10.5px; letter-spacing:.1em;
+    color: var(--rust-dark); text-transform:uppercase; margin: 8px 4px 2px;
+  }
+  .pin-icon .dot{
+    width: 26px; height:26px; background: var(--rust);
+    border: 2px solid var(--cream-text); border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg); display:flex; align-items:center; justify-content:center;
+    filter: drop-shadow(0 3px 4px rgba(0,0,0,.5)); margin: 0 0 0 -13px;
+  }
+  .pin-icon .num{
+    transform: rotate(45deg); font-family:'Space Mono', monospace;
+    font-weight:700; font-size: 11px; color: var(--cream-text);
+  }
+  .pin-icon.active .dot{ background: var(--gold); }
+
+  .chest-icon{ filter: drop-shadow(0 3px 4px rgba(0,0,0,.5)); }
+  .chest-icon svg{ display:block; }
+  .chest-icon.active{ filter: drop-shadow(0 0 6px rgba(198,154,61,.9)) drop-shadow(0 3px 4px rgba(0,0,0,.5)); }
+  .leaflet-control-attribution{ font-size:9px; }
+
+  .mission-card{
+    background: var(--parchment); color: var(--ink); border-radius:8px;
+    padding: 22px 20px; box-shadow: var(--shadow);
+  }
+  .mission-card .mnum{
+    font-family:'Space Mono', monospace; font-size:11px; letter-spacing:.18em;
+    color: var(--rust-dark); text-transform:uppercase; margin: 0 0 6px;
+  }
+  .mission-card h2{
+    font-family:'Cinzel', serif; font-size:21px; margin: 0 0 8px; color: var(--rust-dark);
+  }
+  .mission-card .short-desc{ font-size:14px; color: rgba(27,42,31,.7); margin: 0 0 14px; line-height:1.5; }
+
+  .mission-media{ margin: 0 0 16px; border-radius:6px; overflow:hidden; background:#000; }
+  .mission-media img, .mission-media video{ width:100%; display:block; max-height:340px; object-fit:contain; background:#000; }
+  .mission-media .no-media{ padding:20px; text-align:center; font-size:12px; color: rgba(27,42,31,.5); background: rgba(27,42,31,.06); }
+
+  .mission-instructions{
+    font-size:15px; line-height:1.65; color: var(--ink); background: rgba(255,255,255,.5);
+    border-radius:6px; padding:14px; margin-bottom:14px; white-space:pre-wrap;
+  }
+
+  .hint-toggle{
+    background:none; border:none; color: var(--rust-dark); text-decoration:underline;
+    padding:0; font-size:14px; font-weight:600; margin-bottom:14px; cursor:pointer;
+  }
+  .hint-box{
+    font-size:13.5px; font-style:italic; color: var(--ink); background: rgba(198,154,61,.15);
+    border-left:3px solid var(--gold); padding:10px 12px; border-radius:0 5px 5px 0; margin: -6px 0 14px;
+  }
+
+  .answer-form{ display:flex; gap:8px; margin-bottom:14px; }
+  .answer-form input{
+    flex:1; padding:12px; border-radius:4px; border:1px solid rgba(27,42,31,.25);
+    font-family:'Work Sans',sans-serif; font-size:16px;
+  }
+  .answer-form button{
+    font-family:'Work Sans',sans-serif; font-weight:600; font-size:14px;
+    border-radius:4px; padding:0 18px; cursor:pointer; border:none;
+    background: var(--rust); color: var(--cream-text);
+  }
+  .answer-form button:active{ filter:brightness(1.1); }
+
+  .feedback-box{ border-radius:6px; padding:14px; margin-bottom:6px; font-size:14.5px; line-height:1.5; }
+  .feedback-box.ok{ background: rgba(34,64,42,.12); border:1px solid rgba(34,64,42,.3); color: var(--forest-mid); }
+  .feedback-box.ko{ background: rgba(181,70,46,.12); border:1px solid rgba(181,70,46,.3); color: var(--rust-dark); }
+  .reward-badge{
+    display:inline-flex; align-items:center; gap:8px; margin-top:8px;
+    font-family:'Cinzel', serif; font-weight:700; font-size:15px; color: var(--rust-dark);
+  }
+  .reward-badge .digit{
+    width:32px; height:32px; border-radius:50%; background: var(--gold); color:#3a2a0a;
+    display:flex; align-items:center; justify-content:center; font-size:16px;
+  }
+
+  .index-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .index-list a{
+    display:flex; align-items:center; gap:12px; text-decoration:none; color: var(--ink);
+    background: rgba(255,255,255,.5); border-radius:6px; padding:12px 14px; font-size:14px; font-weight:600;
+  }
+  .index-list a .badge{
+    width:26px; height:26px; border-radius:50%; background: var(--rust); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:12px; flex-shrink:0;
+  }
+  .index-note{ font-size:12.5px; color: rgba(243,236,216,.55); text-align:center; margin: 0 0 18px; font-family:'Space Mono',monospace; }
+
+  .loading, .error-box{ text-align:center; padding: 20px; font-size:13px; color: rgba(27,42,31,.6); }
+  .error-box{ color: var(--rust-dark); }
+
+  .footer-note{ text-align:center; margin-top: 34px; font-size:11.5px; color: rgba(243,236,216,.4); font-family:'Space Mono', monospace; }
+
+  ::selection{ background: var(--gold); color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <svg class="compass" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="46" stroke="#E7CD86" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="3" fill="#E7CD86"/>
+      <path d="M50 8 L56 50 L50 92 L44 50 Z" fill="#B5462E"/>
+      <path d="M8 50 L50 44 L92 50 L50 56 Z" fill="#E7CD86" opacity="0.7"/>
+    </svg>
+    <p class="eyebrow">Chasse au trésor</p>
+    <h1 id="pageTitle">Votre mission</h1>
+  </header>
+
+  <div class="map-card">
+    <div id="map"></div>
+    <p class="map-caption" id="mapCaption">Toutes les missions</p>
+  </div>
+
+  <div id="content" class="mission-card"><p class="loading">Chargement de la mission…</p></div>
+
+  <p class="footer-note">Bonne chasse !</p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var content = document.getElementById('content');
+  var pageTitle = document.getElementById('pageTitle');
+  var mapCaption = document.getElementById('mapCaption');
+
+  var DEFAULT_CENTER = [49.1039, 0.4906];
+  var DEFAULT_ZOOM = 14;
+
+  var missions = [];
+  var markers = {};
+  var map = null;
+
+  function escapeHtml(s){
+    return (s||'').replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function mediaBlockHtml(m){
+    if(m.mediaType === 'image'){
+      var src = m.mediaSource === 'url' ? m.mediaUrl : m.mediaData;
+      if(src) return '<div class="mission-media"><img src="' + escapeHtml(src) + '" alt="' + escapeHtml(m.title||'') + '"></div>';
+      return '<div class="mission-media"><div class="no-media">Image indisponible.</div></div>';
+    }
+    if(m.mediaType === 'video'){
+      var vsrc = m.mediaSource === 'url' ? m.mediaUrl : m.mediaData;
+      if(vsrc) return '<div class="mission-media"><video src="' + escapeHtml(vsrc) + '" controls playsinline></video></div>';
+      return '<div class="mission-media"><div class="no-media">Vidéo indisponible.</div></div>';
+    }
+    return '';
+  }
+
+  function missionHtml(m){
+    var hintHtml = m.hint
+      ? '<button type="button" class="hint-toggle" id="hintToggleBtn">Afficher l\'indice</button>' +
+        '<div class="hint-box" id="hintBox" style="display:none">' + escapeHtml(m.hint) + '</div>'
+      : '';
+    var answerHtml = m.answer
+      ? '<div class="answer-form"><input type="text" id="answerInput" placeholder="Votre réponse..."><button type="button" id="answerSubmit">Valider</button></div><div id="answerFeedback"></div>'
+      : '';
+    return '' +
+      '<p class="mnum">Mission ' + escapeHtml(String(m.missionNumber || '')) + '</p>' +
+      '<h2>' + escapeHtml(m.title || 'Sans titre') + '</h2>' +
+      (m.shortDesc ? '<p class="short-desc">' + escapeHtml(m.shortDesc) + '</p>' : '') +
+      mediaBlockHtml(m) +
+      (m.instructions ? '<div class="mission-instructions">' + escapeHtml(m.instructions) + '</div>' : '') +
+      hintHtml +
+      answerHtml;
+  }
+
+  function bindMission(m){
+    var hintBtn = document.getElementById('hintToggleBtn');
+    if(hintBtn){
+      var hintBox = document.getElementById('hintBox');
+      hintBtn.addEventListener('click', function(){
+        var showing = hintBox.style.display === 'block';
+        hintBox.style.display = showing ? 'none' : 'block';
+        hintBtn.textContent = showing ? "Afficher l'indice" : "Masquer l'indice";
+      });
+    }
+    var ansBtn = document.getElementById('answerSubmit');
+    if(ansBtn){
+      var input = document.getElementById('answerInput');
+      var feedback = document.getElementById('answerFeedback');
+      var submit = function(){
+        var val = (input.value || '').trim().toLowerCase();
+        var expected = (m.answer || '').trim().toLowerCase();
+        var isOk = !!expected && val === expected;
+        if(isOk){
+          feedback.innerHTML = '<div class="feedback-box ok">' + escapeHtml(m.successText || 'Bonne réponse !') +
+            (m.rewardDigit ? '<div class="reward-badge"><span class="digit">' + escapeHtml(String(m.rewardDigit)) + '</span> Chiffre gagné</div>' : '') +
+            '</div>';
+        }else{
+          feedback.innerHTML = '<div class="feedback-box ko">' + escapeHtml(m.failText || "Ce n'est pas la bonne réponse, réessayez.") + '</div>';
+        }
+      };
+      ansBtn.addEventListener('click', submit);
+      input.addEventListener('keydown', function(e){ if(e.key === 'Enter') submit(); });
+    }
+  }
+
+  function showMission(m){
+    pageTitle.textContent = m.title || 'Votre mission';
+    mapCaption.textContent = 'Mission ' + (m.missionNumber || '') + ' — ' + (m.title || '');
+    content.className = 'mission-card';
+    content.innerHTML = missionHtml(m);
+    bindMission(m);
+  }
+
+  function showIndex(){
+    pageTitle.textContent = 'Toutes les missions';
+    mapCaption.textContent = 'Toutes les missions — touchez un repère';
+    if(!missions.length){
+      content.className = 'mission-card';
+      content.innerHTML = '<p class="error-box">Aucune mission n\'a encore été publiée.</p>';
+      return;
+    }
+    var items = missions.map(function(m, idx){
+      return '<li><a href="#m=' + encodeURIComponent(m.id) + '">' +
+        '<span class="badge">' + (idx+1) + '</span>' + escapeHtml(m.title || 'Mission ' + (idx+1)) +
+        '</a></li>';
+    }).join('');
+    content.className = '';
+    content.innerHTML = '<p class="index-note">Touchez un repère sur la carte, ou choisissez une mission ci-dessous.</p><ul class="index-list">' + items + '</ul>';
+  }
+
+  function showError(message){
+    content.className = 'mission-card';
+    content.innerHTML = '<p class="error-box">' + escapeHtml(message) + '</p>';
+  }
+
+  function highlightMarker(id){
+    Object.keys(markers).forEach(function(mid){
+      var m = markers[mid];
+      markers[mid].setIcon(makeIcon(m._missionIndex + 1, mid === id, m._missionIndex === 0));
+    });
+  }
+
+  var CHEST_SVG = '<svg viewBox="0 0 40 34" width="34" height="29">' +
+    '<ellipse cx="20" cy="31" rx="14" ry="2.5" fill="rgba(0,0,0,.35)"/>' +
+    '<rect x="4" y="14" width="32" height="16" rx="3" fill="#6B4226" stroke="#2E1B0E" stroke-width="2"/>' +
+    '<path d="M4 14 C4 4 36 4 36 14 Z" fill="#8B5A2B" stroke="#2E1B0E" stroke-width="2"/>' +
+    '<rect x="16" y="4" width="8" height="26" fill="#C69A3D" stroke="#2E1B0E" stroke-width="1.5"/>' +
+    '<rect x="16.5" y="14" width="7" height="8" rx="1.5" fill="#E7CD86" stroke="#2E1B0E" stroke-width="1.5"/>' +
+    '<circle cx="20" cy="17.5" r="1.3" fill="#2E1B0E"/>' +
+    '</svg>';
+
+  function makeIcon(num, active, isChest){
+    if(isChest){
+      return L.divIcon({
+        className: 'chest-icon' + (active ? ' active' : ''),
+        html: CHEST_SVG,
+        iconSize: [34, 29],
+        iconAnchor: [17, 29]
+      });
+    }
+    return L.divIcon({
+      className: 'pin-icon' + (active ? ' active' : ''),
+      html: '<span class="dot"><span class="num">' + num + '</span></span>',
+      iconSize: [26, 26],
+      iconAnchor: [0, 26]
+    });
+  }
+
+  function buildMap(){
+    if(!missions.length) return;
+    map = L.map('map', { zoomControl: true, attributionControl: true }).setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+
+    var satLayer = L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}', {
+      maxNativeZoom: 19, maxZoom: 20, attribution: 'Orthophotos &copy; IGN / Géoportail'
+    });
+    var fallback = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19, attribution: 'Tiles &copy; Esri'
+    });
+    satLayer.on('tileerror', function(){ if(map.hasLayer(satLayer)){ map.removeLayer(satLayer); fallback.addTo(map); } });
+    satLayer.addTo(map);
+
+    missions.forEach(function(m, idx){
+      if(typeof m.lat !== 'number' || typeof m.lng !== 'number') return;
+      var marker = L.marker([m.lat, m.lng], { icon: makeIcon(idx + 1, false, idx === 0) });
+      marker._missionIndex = idx;
+      marker.on('click', function(){ location.hash = '#m=' + encodeURIComponent(m.id); });
+      marker.addTo(map);
+      markers[m.id] = marker;
+    });
+
+    var withCoords = missions.filter(function(m){ return typeof m.lat === 'number' && typeof m.lng === 'number'; });
+    if(withCoords.length){
+      var group = L.featureGroup(withCoords.map(function(m){ return markers[m.id]; }));
+      try{ map.fitBounds(group.getBounds().pad(0.25)); }catch(e){}
+    }
+  }
+
+  function render(){
+    var match = /^#m=([^&]*)/.exec(location.hash);
+    var wantedId = match ? decodeURIComponent(match[1]) : null;
+
+    if(!wantedId){
+      showIndex();
+      if(map) highlightMarker(null);
+      return;
+    }
+    var found = missions.filter(function(m){ return m.id === wantedId; })[0];
+    if(found){
+      showMission(found);
+      if(map){
+        highlightMarker(wantedId);
+        if(typeof found.lat === 'number' && typeof found.lng === 'number'){
+          map.setView([found.lat, found.lng], Math.max(map.getZoom(), 16));
+        }
+      }
+    }else{
+      showError("Cette mission est introuvable dans missions.json.");
+      if(map) highlightMarker(null);
+    }
+  }
+
+  function init(){
+    fetch('missions.json', { cache: 'no-store' })
+      .then(function(r){
+        if(!r.ok) throw new Error('http-' + r.status);
+        return r.json();
+      })
+      .then(function(list){
+        if(!Array.isArray(list)) throw new Error('bad-format');
+        missions = list;
+        buildMap();
+        render();
+      })
+      .catch(function(){
+        document.querySelector('.map-card').style.display = 'none';
+        showError("Impossible de charger missions.json. Vérifiez que ce fichier est bien publié dans le même dossier que cette page (ex. sur GitHub Pages), et que la page est ouverte via une adresse http(s) et non directement depuis l'ordinateur.");
+      });
+  }
+
+  window.addEventListener('hashchange', render);
+  init();
+})();
+</script>
+
+</body>
+</html>

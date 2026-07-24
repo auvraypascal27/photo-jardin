@@ -1,0 +1,40 @@
+[
+  {
+    "id": "pqc90qbk",
+    "lat": 49.09212296031296,
+    "lng": 0.48583790659904486,
+    "missionNumber": "1",
+    "title": "Le trésor",
+    "shortDesc": "Le trésor est ici… mais il est verrouillé.",
+    "instructions": "Le coffre est fermé par un cadenas à 4 chiffres.\nQuatre missions sont réparties sur le parcours. Chaque mission vous permettra de récupérer un chiffre.\nBonne chance… le trésor vous attend !",
+    "hint": "Vous pouvez réaliser les missions dans l’ordre que vous souhaitez, mais attention : pour ouvrir le coffre, les chiffres devront être replacés dans l’ordre des missions 1, 2, 3 et 4.",
+    "mediaType": "image",
+    "mediaSource": "url",
+    "mediaUrl": "https://auvraypascal27.github.io/photo-jardin/jardin.jpg",
+    "answer": "",
+    "rewardDigit": "",
+    "successText": "",
+    "failText": "",
+    "qrMode": "mission",
+    "showClueOnPrint": false
+  },
+  {
+    "id": "piupc3jo",
+    "lat": 49.10248218411655,
+    "lng": 0.4916274547576905,
+    "missionNumber": 2,
+    "title": "",
+    "shortDesc": "",
+    "instructions": "",
+    "hint": "",
+    "mediaType": "none",
+    "mediaSource": "upload",
+    "mediaUrl": "",
+    "answer": "",
+    "rewardDigit": "",
+    "successText": "",
+    "failText": "",
+    "qrMode": "mission",
+    "showClueOnPrint": false
+  }
+]

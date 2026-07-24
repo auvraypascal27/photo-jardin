@@ -1,8 +1,8 @@
 [
   {
     "id": "pqc90qbk",
-    "lat": 49.09213349889436,
-    "lng": 0.48561528325080877,
+    "lat": 49.09214755033272,
+    "lng": 0.4855965077877045,
     "missionNumber": "0",
     "title": "Le trésor",
     "shortDesc": "Le trésor est ici… mais il est verrouillé.",
@@ -35,12 +35,14 @@
     "successText": "",
     "failText": "",
     "qrMode": "mission",
-    "showClueOnPrint": false
+    "showClueOnPrint": false,
+    "mediaData": "",
+    "nextMissionId": "pzmjggzk"
   },
   {
-    "id": "pigdqy3s",
-    "lat": 49.0922666169156,
-    "lng": 0.4661659151470366,
+    "id": "pzmjggzk",
+    "lat": null,
+    "lng": null,
     "missionNumber": "2",
     "title": "L'arrêt du messager",
     "shortDesc": "Le messager faisait toujours une halte à cet endroit...",
@@ -55,6 +57,7 @@
     "successText": "",
     "failText": "",
     "qrMode": "mission",
+    "nextMissionId": "",
     "showClueOnPrint": false
   }
 ]

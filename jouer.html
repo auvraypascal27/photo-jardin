@@ -285,7 +285,7 @@
     }
     var items = missions.map(function(m, idx){
       return '<li><a href="#m=' + encodeURIComponent(m.id) + '">' +
-        '<span class="badge">' + (idx+1) + '</span>' + escapeHtml(m.title || 'Mission ' + (idx+1)) +
+        '<span class="badge">' + missionLabel(m, idx) + '</span>' + escapeHtml(m.title || 'Mission ' + (idx+1)) +
         '</a></li>';
     }).join('');
     content.className = '';
@@ -297,10 +297,17 @@
     content.innerHTML = '<p class="error-box">' + escapeHtml(message) + '</p>';
   }
 
+  function missionLabel(m, idx){
+    return (m.missionNumber === '' || m.missionNumber === undefined || m.missionNumber === null) ? (idx + 1) : m.missionNumber;
+  }
+  function isChestMission(m){
+    return String(m.missionNumber) === '0';
+  }
+
   function highlightMarker(id){
     Object.keys(markers).forEach(function(mid){
       var m = markers[mid];
-      markers[mid].setIcon(makeIcon(m._missionIndex + 1, mid === id, m._missionIndex === 0));
+      markers[mid].setIcon(makeIcon(missionLabel(m._mission, m._missionIndex), mid === id, isChestMission(m._mission)));
     });
   }
 
@@ -345,8 +352,9 @@
 
     missions.forEach(function(m, idx){
       if(typeof m.lat !== 'number' || typeof m.lng !== 'number') return;
-      var marker = L.marker([m.lat, m.lng], { icon: makeIcon(idx + 1, false, idx === 0) });
+      var marker = L.marker([m.lat, m.lng], { icon: makeIcon(missionLabel(m, idx), false, isChestMission(m)) });
       marker._missionIndex = idx;
+      marker._mission = m;
       marker.on('click', function(){ location.hash = '#m=' + encodeURIComponent(m.id); });
       marker.addTo(map);
       markers[m.id] = marker;

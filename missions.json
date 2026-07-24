@@ -1,8 +1,8 @@
 [
   {
     "id": "pqc90qbk",
-    "lat": 49.09212296031296,
-    "lng": 0.48583790659904486,
+    "lat": 49.09213349889436,
+    "lng": 0.48561528325080877,
     "missionNumber": "0",
     "title": "Le trésor",
     "shortDesc": "Le trésor est ici… mais il est verrouillé.",
@@ -16,13 +16,12 @@
     "successText": "",
     "failText": "",
     "qrMode": "mission",
-    "showClueOnPrint": false,
-    "mediaData": ""
+    "showClueOnPrint": false
   },
   {
     "id": "piupc3jo",
-    "lat": 49.102476915924626,
-    "lng": 0.4917669296264649,
+    "lat": 49.10293349048203,
+    "lng": 0.4913820326328278,
     "missionNumber": "1",
     "title": "Le gardien de la mémoire",
     "shortDesc": "Le premier indice se trouve près du monument aux morts.",
@@ -36,7 +35,26 @@
     "successText": "",
     "failText": "",
     "qrMode": "mission",
-    "showClueOnPrint": false,
-    "mediaData": ""
+    "showClueOnPrint": false
+  },
+  {
+    "id": "pigdqy3s",
+    "lat": 49.0922666169156,
+    "lng": 0.4661659151470366,
+    "missionNumber": "2",
+    "title": "L'arrêt du messager",
+    "shortDesc": "Le messager faisait toujours une halte à cet endroit...",
+    "instructions": "Le gardien du trésor y a laissé un nouvel indice.",
+    "hint": "Chaque matin, les enfants attendent ici leur transport.",
+    "mediaType": "none",
+    "mediaSource": "upload",
+    "mediaData": "",
+    "mediaUrl": "",
+    "answer": "71",
+    "rewardDigit": "2",
+    "successText": "",
+    "failText": "",
+    "qrMode": "mission",
+    "showClueOnPrint": false
   }
 ]

@@ -6,8 +6,8 @@
     "missionNumber": "0",
     "title": "Le trésor",
     "shortDesc": "Le trésor est ici… mais il est verrouillé.",
-    "instructions": "Le coffre est fermé par un cadenas à 4 chiffres.\nQuatre missions sont réparties sur le parcours. Chaque mission vous permettra de récupérer un chiffre.\nBonne chance… le trésor vous attend !",
-    "hint": "Vous pouvez réaliser les missions dans l’ordre que vous souhaitez, mais attention : pour ouvrir le coffre, les chiffres devront être replacés dans l’ordre des missions 1, 2, 3 et 4.",
+    "instructions": "Le coffre est fermé par un cadenas à 6 chiffres.\nSix missions sont réparties sur le parcours. Chaque mission vous permettra de récupérer un chiffre.\nBonne chance… le trésor vous attend !",
+    "hint": "Vous pouvez réaliser les missions dans l’ordre que vous souhaitez, mais attention : pour ouvrir le coffre, les chiffres devront être replacés dans l’ordre des missions 1, 2, 3 ,4 ,5 et 6",
     "mediaType": "image",
     "mediaSource": "url",
     "mediaUrl": "https://auvraypascal27.github.io/photo-jardin/jardin.jpg",
@@ -16,7 +16,10 @@
     "successText": "",
     "failText": "",
     "qrMode": "mission",
-    "showClueOnPrint": false
+    "showClueOnPrint": false,
+    "mediaData": "",
+    "nextMissionId": "",
+    "hideOnPlayerMap": false
   },
   {
     "id": "piupc3jo",
@@ -53,7 +56,7 @@
     "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/1f554f729685af42b453e9f704f897290a751e35/Mission2.mp4",
     "answer": "71",
     "rewardDigit": "2",
-    "successText": "",
+    "successText": "Bravo , vous avez trouvé vous pouvez passer a la mission n°3 si toute fois elle n'est pas déjà faite.",
     "failText": "",
     "qrMode": "mission",
     "nextMissionId": "",

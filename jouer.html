@@ -123,6 +123,11 @@
   }
   .code-digit.filled{ background: var(--gold); color:#3a2a0a; }
   .code-digit.empty{ background: rgba(27,42,31,.1); color: rgba(27,42,31,.3); }
+  .progress-reset{
+    display:block; width:100%; margin-top:14px; padding:10px;
+    background:none; border:1px dashed rgba(181,70,46,.5); border-radius:5px;
+    color: var(--rust-dark); font-size:12px; font-weight:600; cursor:pointer;
+  }
 
   .chest-icon{ filter: drop-shadow(0 3px 4px rgba(0,0,0,.5)); }
   .chest-icon svg{ display:block; }
@@ -348,11 +353,19 @@
       '<div class="progress-detail' + (progressOpen ? ' open' : '') + '" id="progressDetail">' +
         '<ul class="progress-list">' + listHtml + '</ul>' +
         (hasAnyDigit ? '<div class="code-row">' + codeHtml + '</div>' : '') +
+        '<button type="button" class="progress-reset" id="progressResetBtn">↺ Réinitialiser (nouvelle équipe / recommencer)</button>' +
       '</div>';
 
     document.getElementById('progressToggleRow').addEventListener('click', function(){
       progressOpen = !progressOpen;
       renderProgressStrip();
+    });
+    document.getElementById('progressResetBtn').addEventListener('click', function(){
+      if(!confirm("Réinitialiser effacera le nom d'équipe et toute la progression sur cet appareil. Continuer ?")) return;
+      try{ localStorage.removeItem(TEAM_KEY); }catch(e){}
+      try{ localStorage.removeItem(PROGRESS_KEY); }catch(e){}
+      location.hash = '';
+      location.reload();
     });
   }
 

@@ -218,6 +218,10 @@
     return '';
   }
 
+  function nextMissionButtonHtml(){
+    return '<button type="button" id="nextMissionBtn" style="width:100%;margin-top:6px;background:var(--rust);color:var(--cream-text);border:none;border-radius:4px;padding:12px;font-weight:600;font-size:14px;cursor:pointer;">Mission suivante →</button>';
+  }
+
   function missionHtml(m){
     var hintHtml = m.hint
       ? '<button type="button" class="hint-toggle" id="hintToggleBtn">Afficher l\'indice</button>' +
@@ -226,9 +230,8 @@
     var answerHtml = m.answer
       ? '<div class="answer-form"><input type="text" id="answerInput" placeholder="Votre réponse..."><button type="button" id="answerSubmit">Valider</button></div><div id="answerFeedback"></div>'
       : '';
-    var nextHtml = m.nextMissionId
-      ? '<button type="button" id="nextMissionBtn" style="width:100%;margin-top:6px;background:var(--rust);color:var(--cream-text);border:none;border-radius:4px;padding:12px;font-weight:600;font-size:14px;cursor:pointer;">Mission suivante →</button>'
-      : '';
+    // If the mission has a question, the next-mission button only appears after a correct answer.
+    var nextHtmlUpfront = (m.nextMissionId && !m.answer) ? nextMissionButtonHtml() : '';
     return '' +
       '<p class="mnum">Mission ' + escapeHtml(String(m.missionNumber || '')) + '</p>' +
       '<h2>' + escapeHtml(m.title || 'Sans titre') + '</h2>' +
@@ -237,7 +240,17 @@
       (m.instructions ? '<div class="mission-instructions">' + escapeHtml(m.instructions) + '</div>' : '') +
       hintHtml +
       answerHtml +
-      nextHtml;
+      nextHtmlUpfront +
+      '<div id="nextMissionSlot"></div>';
+  }
+
+  function bindNextButton(m){
+    var nextBtn = document.getElementById('nextMissionBtn');
+    if(nextBtn && m.nextMissionId){
+      nextBtn.addEventListener('click', function(){
+        location.hash = '#m=' + encodeURIComponent(m.nextMissionId);
+      });
+    }
   }
 
   function bindMission(m){
@@ -262,6 +275,13 @@
           feedback.innerHTML = '<div class="feedback-box ok">' + escapeHtml(m.successText || 'Bonne réponse !') +
             (m.rewardDigit ? '<div class="reward-badge"><span class="digit">' + escapeHtml(String(m.rewardDigit)) + '</span> Chiffre gagné</div>' : '') +
             '</div>';
+          if(m.nextMissionId){
+            var slot = document.getElementById('nextMissionSlot');
+            if(slot && !slot.querySelector('#nextMissionBtn')){
+              slot.innerHTML = nextMissionButtonHtml();
+              bindNextButton(m);
+            }
+          }
         }else{
           feedback.innerHTML = '<div class="feedback-box ko">' + escapeHtml(m.failText || "Ce n'est pas la bonne réponse, réessayez.") + '</div>';
         }
@@ -269,12 +289,7 @@
       ansBtn.addEventListener('click', submit);
       input.addEventListener('keydown', function(e){ if(e.key === 'Enter') submit(); });
     }
-    var nextBtn = document.getElementById('nextMissionBtn');
-    if(nextBtn && m.nextMissionId){
-      nextBtn.addEventListener('click', function(){
-        location.hash = '#m=' + encodeURIComponent(m.nextMissionId);
-      });
-    }
+    bindNextButton(m);
   }
 
   function showMission(m){

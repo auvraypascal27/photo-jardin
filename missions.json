@@ -36,8 +36,8 @@
     "failText": "",
     "qrMode": "mission",
     "showClueOnPrint": false,
-    "mediaData": "",
-    "nextMissionId": "pzmjggzk"
+    "nextMissionId": "pzmjggzk",
+    "mediaData": ""
   },
   {
     "id": "pzmjggzk",
@@ -48,16 +48,16 @@
     "shortDesc": "Le messager faisait toujours une halte à cet endroit...",
     "instructions": "Le gardien du trésor y a laissé un nouvel indice.",
     "hint": "Chaque matin, les enfants attendent ici leur transport.",
-    "mediaType": "none",
-    "mediaSource": "upload",
-    "mediaData": "",
-    "mediaUrl": "",
+    "mediaType": "video",
+    "mediaSource": "url",
+    "mediaUrl": "https://github.com/auvraypascal27/photo-jardin/blob/main/Mission%20N%C2%B02.mp4",
     "answer": "71",
     "rewardDigit": "2",
     "successText": "",
     "failText": "",
     "qrMode": "mission",
     "nextMissionId": "",
-    "showClueOnPrint": false
+    "showClueOnPrint": false,
+    "mediaData": ""
   }
 ]

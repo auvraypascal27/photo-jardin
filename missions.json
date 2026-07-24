@@ -6,8 +6,8 @@
     "missionNumber": "0",
     "title": "Le trésor",
     "shortDesc": "Le trésor est ici… mais il est verrouillé.",
-    "instructions": "Le coffre est fermé par un cadenas à 6 chiffres.\nSix missions sont réparties sur le parcours. Chaque mission vous permettra de récupérer un chiffre.\nBonne chance… le trésor vous attend !",
-    "hint": "Vous pouvez réaliser les missions dans l’ordre que vous souhaitez, mais attention : pour ouvrir le coffre, les chiffres devront être replacés dans l’ordre des missions 1, 2, 3, 4, 5 et 6",
+    "instructions": "Le coffre est fermé par un cadenas à 4 chiffres.\nQuatre missions sont réparties sur le parcours. Chaque mission vous permettra de récupérer un chiffre.\nBonne chance… le trésor vous attend !",
+    "hint": "Vous pouvez réaliser les missions dans l’ordre que vous souhaitez, mais attention : pour ouvrir le coffre, les chiffres devront être replacés dans l’ordre des missions 1, 2, 3 et 4.",
     "mediaType": "image",
     "mediaSource": "url",
     "mediaUrl": "https://auvraypascal27.github.io/photo-jardin/jardin.jpg",
@@ -16,10 +16,7 @@
     "successText": "",
     "failText": "",
     "qrMode": "mission",
-    "showClueOnPrint": false,
-    "mediaData": "",
-    "nextMissionId": "",
-    "hideOnPlayerMap": false
+    "showClueOnPrint": false
   },
   {
     "id": "piupc3jo",
@@ -32,14 +29,15 @@
     "hint": "La réponse ne se trouve pas sur la grande stèle, mais sur la plaque noire située juste au-dessus du socle.",
     "mediaType": "image",
     "mediaSource": "url",
-    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/main/Capture%20d%27%C3%A9cran%202026-07-24%20025842.png",
+    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/8b90bbe8951e3ffeb9fb89c982941a436e4e5fa7/Mission1.jpg",
     "answer": "Jean",
     "rewardDigit": "7",
     "successText": "",
     "failText": "",
     "qrMode": "mission",
     "showClueOnPrint": false,
-    "nextMissionId": "pzmjggzk"
+    "nextMissionId": "pzmjggzk",
+    "hideOnPlayerMap": false
   },
   {
     "id": "pzmjggzk",
@@ -52,7 +50,7 @@
     "hint": "Chaque matin, les enfants attendent ici leur transport.",
     "mediaType": "video",
     "mediaSource": "url",
-    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/d4abcd561c38c5ab9fd9017809222010bfb46094/Mission2.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/1f554f729685af42b453e9f704f897290a751e35/Mission2.mp4",
     "answer": "71",
     "rewardDigit": "2",
     "successText": "",
@@ -94,14 +92,15 @@
     "hint": "Je fais partie du chemin.\nOn me marche dessus sans jamais me remarquer.\nMais aujourd'hui, je cache le secret du Gardien.\nQui suis-je ?",
     "mediaType": "image",
     "mediaSource": "url",
-    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/main/Capture%20d%27%C3%A9cran%202026-07-24%20121946.png",
+    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/8b90bbe8951e3ffeb9fb89c982941a436e4e5fa7/Mission3.jpg",
     "answer": "AVENTURIER",
     "rewardDigit": "5",
     "successText": "",
     "failText": "",
     "qrMode": "mission",
     "nextMissionId": "pyspp69z",
-    "showClueOnPrint": false
+    "showClueOnPrint": false,
+    "hideOnPlayerMap": false
   },
   {
     "id": "pyspp69z",
@@ -116,11 +115,33 @@
     "mediaSource": "upload",
     "mediaUrl": "",
     "answer": "",
-    "rewardDigit": "",
+    "rewardDigit": "3",
     "successText": "",
     "failText": "",
     "qrMode": "gps",
     "nextMissionId": "p2pfzneg",
-    "showClueOnPrint": false
+    "showClueOnPrint": false,
+    "hideOnPlayerMap": true
+  },
+  {
+    "id": "p220v226",
+    "lat": 49.10948838438043,
+    "lng": 0.49503922462463384,
+    "missionNumber": "6",
+    "title": "Les Griffes du Gardien",
+    "shortDesc": "",
+    "instructions": "Le Gardien ne laisse jamais d'empreintes...\n\nMais il lui arrive de marquer son territoire.\n\nBeaucoup d'aventuriers ont échoué ici...\n\nTous ont suivi la flèche.\n\nTous se sont trompés.\n\nParcourez le sentier sans vous arrêter, mais ouvrez l'œil.\n\nSi vous allez trop loin, vous marcherez pour rien.\n\nLorsque vous apercevrez les trois profondes griffes du Gardien, vous saurez que vous êtes sur la bonne piste.\n\nCherchez alors le dernier indice à proximité.",
+    "hint": "Les apparences sont parfois trompeuses...\n\nLorsque tous regardent dans la même direction, le Gardien choisit toujours l'autre.\n\nIgnorez la flèche.\n\nEmpruntez le chemin opposé et laissez-vous guider jusqu'à la dernière énigme.",
+    "mediaType": "image",
+    "mediaSource": "url",
+    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/8b90bbe8951e3ffeb9fb89c982941a436e4e5fa7/Mission6.jpg",
+    "answer": "",
+    "rewardDigit": "",
+    "successText": "",
+    "failText": "",
+    "qrMode": "mission",
+    "nextMissionId": "",
+    "showClueOnPrint": false,
+    "hideOnPlayerMap": false
   }
 ]

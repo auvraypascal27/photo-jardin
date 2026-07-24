@@ -244,6 +244,13 @@
   var teamGate = document.getElementById('teamGate');
   var teamNameInput = document.getElementById('teamNameInput');
   var teamNameSubmit = document.getElementById('teamNameSubmit');
+  var pendingGoToChest = false;
+
+  function goToChest(){
+    var chest = missions.filter(function(m){ return String(m.missionNumber) === '0'; })[0];
+    if(chest){ location.hash = '#m=' + encodeURIComponent(chest.id); }
+    else{ location.hash = ''; render(); }
+  }
 
   function checkTeamGate(){
     if(getTeamName()){ teamGate.classList.add('hidden'); }
@@ -255,6 +262,8 @@
     setTeamName(name);
     trackEvent('Inscription', '');
     checkTeamGate();
+    if(missions.length) goToChest();
+    else pendingGoToChest = true;
   }
   teamNameSubmit.addEventListener('click', submitTeamName);
   teamNameInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') submitTeamName(); });
@@ -509,7 +518,8 @@
         if(!Array.isArray(list)) throw new Error('bad-format');
         missions = list;
         buildMap();
-        render();
+        if(pendingGoToChest){ pendingGoToChest = false; goToChest(); }
+        else{ render(); }
       })
       .catch(function(){
         document.querySelector('.map-card').style.display = 'none';

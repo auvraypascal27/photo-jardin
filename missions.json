@@ -89,7 +89,7 @@
     "hint": "Je fais partie du chemin.\nOn me marche dessus sans jamais me remarquer.\nMais aujourd'hui, je cache le secret du Gardien.\nQui suis-je ?",
     "mediaType": "image",
     "mediaSource": "url",
-    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/main/Capture%20d%27%C3%A9cran%202026-07-24%20121946.png",
+    "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/main/Capture%20d'%C3%A9cran%202026-07-24%20121946.png",
     "answer": "AVENTURIER",
     "rewardDigit": "5",
     "successText": "",
@@ -117,7 +117,27 @@
     "qrMode": "gps",
     "nextMissionId": "p2pfzneg",
     "showClueOnPrint": false,
-    "mediaData": "",
     "hideOnPlayerMap": true
+  },
+  {
+    "id": "p220v226",
+    "lat": 49.10949568198991,
+    "lng": 0.49503654241561895,
+    "missionNumber": "6",
+    "title": "Les Griffes du Gardien",
+    "shortDesc": "",
+    "instructions": "Le Gardien ne laisse jamais d'empreintes...\n\nMais il lui arrive de marquer son territoire.\n\nBeaucoup d'aventuriers ont échoué ici...\n\nTous ont suivi la flèche.\n\nTous se sont trompés.\n\nParcourez le sentier sans vous arrêter, mais ouvrez l'œil.\n\nSi vous allez trop loin, vous marcherez pour rien.\n\nLorsque vous apercevrez les trois profondes griffes du Gardien, vous saurez que vous êtes sur la bonne piste.\n\nCherchez alors le dernier indice à proximité.",
+    "hint": "Les apparences sont parfois trompeuses...\n\nLorsque tous regardent dans la même direction, le Gardien choisit toujours l'autre.\n\nIgnorez la flèche.\n\nEmpruntez le chemin opposé et laissez-vous guider jusqu'à la dernière énigme.",
+    "mediaType": "none",
+    "mediaSource": "upload",
+    "mediaUrl": "",
+    "answer": "",
+    "rewardDigit": "",
+    "successText": "",
+    "failText": "",
+    "qrMode": "mission",
+    "nextMissionId": "",
+    "showClueOnPrint": false,
+    "hideOnPlayerMap": false
   }
 ]

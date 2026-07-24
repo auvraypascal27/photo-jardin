@@ -479,7 +479,7 @@
           feedback.innerHTML = '<div class="feedback-box ok">' + escapeHtml(m.successText || 'Bonne réponse !') +
             (m.rewardDigit ? '<div class="reward-badge"><span class="digit">' + escapeHtml(String(m.rewardDigit)) + '</span> Chiffre gagné</div>' : '') +
             '</div>';
-          trackEvent('Mission ' + (m.missionNumber || ''), 'Terminée');
+          trackEvent('Mission ' + (m.missionNumber || '') + ' — ' + (m.title || ''), input.value.trim());
           markMissionComplete(m);
           if(m.nextMissionId){
             var slot = document.getElementById('nextMissionSlot');
@@ -490,7 +490,6 @@
           }
         }else{
           feedback.innerHTML = '<div class="feedback-box ko">' + escapeHtml(m.failText || "Ce n'est pas la bonne réponse, réessayez.") + '</div>';
-          trackEvent('Mission ' + (m.missionNumber || ''), 'Erreur (' + input.value.trim() + ')');
         }
       };
       ansBtn.addEventListener('click', submit);
@@ -505,12 +504,9 @@
     content.className = 'mission-card';
     content.innerHTML = missionHtml(m);
     bindMission(m);
-    trackEvent('Mission ' + (m.missionNumber || ''), 'En cours');
+    trackEvent('Mission ' + (m.missionNumber || '') + ' — ' + (m.title || ''), '(en cours)');
     // Missions without a question are complete as soon as they're viewed.
-    if(!m.answer && String(m.missionNumber) !== '0'){
-      markMissionComplete(m);
-      trackEvent('Mission ' + (m.missionNumber || ''), 'Terminée');
-    }
+    if(!m.answer && String(m.missionNumber) !== '0'){ markMissionComplete(m); }
   }
 
   function showIndex(){

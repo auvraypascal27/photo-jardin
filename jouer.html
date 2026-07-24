@@ -156,6 +156,27 @@
 
   .footer-note{ text-align:center; margin-top: 34px; font-size:11.5px; color: rgba(243,236,216,.4); font-family:'Space Mono', monospace; }
 
+  .team-gate{
+    position:fixed; inset:0; z-index:2000;
+    background:
+      radial-gradient(ellipse at 20% -10%, #24462d 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 110%, #24462d 0%, transparent 50%),
+      var(--forest-deep);
+    display:flex; align-items:center; justify-content:center; padding:20px;
+  }
+  .team-gate.hidden{ display:none; }
+  .team-gate .mission-card{ max-width:400px; width:100%; text-align:center; }
+  .team-gate h2{ font-family:'Cinzel', serif; font-size:20px; color:var(--rust-dark); margin:0 0 8px; }
+  .team-gate p{ font-size:13.5px; color: rgba(27,42,31,.65); margin:0 0 18px; }
+  .team-gate input{
+    width:100%; padding:12px; border-radius:5px; border:1px solid rgba(27,42,31,.25);
+    font-family:'Work Sans',sans-serif; font-size:16px; text-align:center; margin-bottom:12px;
+  }
+  .team-gate button{
+    width:100%; padding:13px; border-radius:5px; border:none; cursor:pointer;
+    background: var(--rust); color: var(--cream-text); font-weight:600; font-size:14.5px;
+  }
+
   ::selection{ background: var(--gold); color: var(--ink); }
 </style>
 </head>
@@ -183,9 +204,56 @@
   <p class="footer-note">Bonne chasse !</p>
 </div>
 
+<div class="team-gate" id="teamGate">
+  <div class="mission-card">
+    <h2>Quel est le nom de votre équipe ?</h2>
+    <p>L'organisateur pourra suivre votre progression en direct.</p>
+    <input type="text" id="teamNameInput" placeholder="Ex. Les Pirates du Jardin" autocomplete="off">
+    <button type="button" id="teamNameSubmit">Commencer l'aventure</button>
+  </div>
+</div>
+
 <script>
 (function(){
   "use strict";
+
+  var TRACKING_URL = 'https://script.google.com/macros/s/AKfycbyzLITNlOscs-BdlTh6_zMsOrazFUgPfZjAd6WpEvcN2UVtkdQN5-qcEWcT2dACkhSi/exec';
+  var TEAM_KEY = 'treasure-team-name';
+
+  function getTeamName(){
+    try{ return localStorage.getItem(TEAM_KEY) || ''; }catch(e){ return ''; }
+  }
+  function setTeamName(name){
+    try{ localStorage.setItem(TEAM_KEY, name); }catch(e){}
+  }
+  function trackEvent(missionLabel, answer){
+    var team = getTeamName();
+    if(!team) return;
+    fetch(TRACKING_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({ team: team, mission: missionLabel || '', answer: answer || '' })
+    }).catch(function(){ /* tracking is best-effort, never block the game */ });
+  }
+
+  var teamGate = document.getElementById('teamGate');
+  var teamNameInput = document.getElementById('teamNameInput');
+  var teamNameSubmit = document.getElementById('teamNameSubmit');
+
+  function checkTeamGate(){
+    if(getTeamName()){ teamGate.classList.add('hidden'); }
+    else{ teamGate.classList.remove('hidden'); teamNameInput.focus(); }
+  }
+  function submitTeamName(){
+    var name = (teamNameInput.value || '').trim();
+    if(!name){ teamNameInput.focus(); return; }
+    setTeamName(name);
+    trackEvent('Inscription', '');
+    checkTeamGate();
+  }
+  teamNameSubmit.addEventListener('click', submitTeamName);
+  teamNameInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') submitTeamName(); });
+  checkTeamGate();
 
   var content = document.getElementById('content');
   var pageTitle = document.getElementById('pageTitle');
@@ -275,6 +343,7 @@
           feedback.innerHTML = '<div class="feedback-box ok">' + escapeHtml(m.successText || 'Bonne réponse !') +
             (m.rewardDigit ? '<div class="reward-badge"><span class="digit">' + escapeHtml(String(m.rewardDigit)) + '</span> Chiffre gagné</div>' : '') +
             '</div>';
+          trackEvent('Mission ' + (m.missionNumber || '') + ' — ' + (m.title || ''), input.value.trim());
           if(m.nextMissionId){
             var slot = document.getElementById('nextMissionSlot');
             if(slot && !slot.querySelector('#nextMissionBtn')){
@@ -298,6 +367,7 @@
     content.className = 'mission-card';
     content.innerHTML = missionHtml(m);
     bindMission(m);
+    trackEvent('Mission ' + (m.missionNumber || '') + ' — ' + (m.title || ''), '(en cours)');
   }
 
   function showIndex(){

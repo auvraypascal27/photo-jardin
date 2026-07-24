@@ -50,7 +50,7 @@
     "hint": "Chaque matin, les enfants attendent ici leur transport.",
     "mediaType": "video",
     "mediaSource": "url",
-    "mediaUrl": "https://github.com/auvraypascal27/photo-jardin/blob/main/Mission%20N%C2%B02.mp4",
+    "mediaUrl": "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/main/Mission%20N%C2%B02.mp4",
     "answer": "71",
     "rewardDigit": "2",
     "successText": "",

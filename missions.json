@@ -88,7 +88,7 @@
     "missionNumber": "3",
     "title": "Le Gardien du Chemin",
     "shortDesc": "",
-    "instructions": "Le Gardien vous attend au bout du chemin...\n\nEmpruntez le chemin de droite.\n\nContinuez jusqu'à la première croisée des chemins.\n\nLà où les deux chemins se séparent, le Gardien a caché un secret...",
+    "instructions": "Le Gardien veille depuis de nombreuses années sur un arbre que tous connaissent...\n\nEmpruntez le chemin.\n\nMarchez jusqu'à croiser un chêne solitaire, au milieu des champs.\n\nC'est à ses pieds que se cache mon secret.\n\nOuvrez l'œil... le Gardien ne révèle jamais ses trésors à ceux qui passent trop vite.",
     "hint": "Je fais partie du chemin.\nOn me marche dessus sans jamais me remarquer.\nMais aujourd'hui, je cache le secret du Gardien.\nQui suis-je ?",
     "mediaType": "image",
     "mediaSource": "url",
@@ -100,7 +100,8 @@
     "qrMode": "mission",
     "nextMissionId": "pyspp69z",
     "showClueOnPrint": false,
-    "hideOnPlayerMap": false
+    "hideOnPlayerMap": false,
+    "mediaData": ""
   },
   {
     "id": "pyspp69z",
@@ -110,7 +111,7 @@
     "title": "Le Gardien a brouillé toutes les pistes.",
     "shortDesc": "Cette fois, seul votre sens de l'orientation vous permettra d'avancer.",
     "instructions": "Rendez-vous aux coordonnées indiquées.",
-    "hint": "",
+    "hint": "Au cœur de la forêt sommeille une créature gigantesque.\n\nSes tentacules s'élèvent vers le ciel depuis des centaines d'années.\n\nBeaucoup pensent qu'il s'agit d'un simple chêne...\n\nLes aventuriers savent, eux, que le Gardien y cache ses secrets.\n\nCherchez le tentacule qui protège son indice...",
     "mediaType": "none",
     "mediaSource": "upload",
     "mediaUrl": "",
@@ -121,7 +122,8 @@
     "qrMode": "gps",
     "nextMissionId": "p2pfzneg",
     "showClueOnPrint": false,
-    "hideOnPlayerMap": true
+    "hideOnPlayerMap": true,
+    "mediaData": ""
   },
   {
     "id": "p220v226",
@@ -135,13 +137,14 @@
     "mediaType": "image",
     "mediaSource": "url",
     "mediaUrl": "https://raw.githubusercontent.com/auvraypascal27/photo-jardin/8b90bbe8951e3ffeb9fb89c982941a436e4e5fa7/Mission6.jpg",
-    "answer": "",
-    "rewardDigit": "",
+    "answer": "7",
+    "rewardDigit": "7",
     "successText": "",
     "failText": "",
     "qrMode": "mission",
     "nextMissionId": "",
     "showClueOnPrint": false,
-    "hideOnPlayerMap": false
+    "hideOnPlayerMap": false,
+    "mediaData": ""
   }
 ]

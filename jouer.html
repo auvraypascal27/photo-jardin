@@ -226,6 +226,14 @@
     background: var(--rust); color: var(--cream-text); font-weight:600; font-size:14.5px;
   }
 
+  .reset-game-btn{
+    width:100%; margin-top:12px; padding:11px 12px; border-radius:5px;
+    border:1px solid rgba(181,70,46,.35); background:rgba(181,70,46,.08);
+    color:var(--rust-dark); font-family:'Work Sans',sans-serif;
+    font-size:13px; font-weight:600; cursor:pointer;
+  }
+  .reset-game-btn:active{ filter:brightness(1.08); }
+
   ::selection{ background: var(--gold); color: var(--ink); }
 </style>
 </head>
@@ -348,12 +356,28 @@
       '<div class="progress-detail' + (progressOpen ? ' open' : '') + '" id="progressDetail">' +
         '<ul class="progress-list">' + listHtml + '</ul>' +
         (hasAnyDigit ? '<div class="code-row">' + codeHtml + '</div>' : '') +
+        '<button type="button" class="reset-game-btn" id="resetGameBtn">Réinitialiser la partie</button>' +
       '</div>';
 
     document.getElementById('progressToggleRow').addEventListener('click', function(){
       progressOpen = !progressOpen;
       renderProgressStrip();
     });
+
+    var resetBtn = document.getElementById('resetGameBtn');
+    if(resetBtn){
+      resetBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        if(!confirm('Voulez-vous vraiment effacer toute la progression et le nom de l\'équipe ?')) return;
+        try{
+          localStorage.removeItem(PROGRESS_KEY);
+          localStorage.removeItem(TEAM_KEY);
+          sessionStorage.clear();
+        }catch(err){}
+        location.hash = '';
+        location.reload();
+      });
+    }
   }
 
   var teamGate = document.getElementById('teamGate');

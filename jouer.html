@@ -459,6 +459,7 @@
 
     missions.forEach(function(m, idx){
       if(typeof m.lat !== 'number' || typeof m.lng !== 'number') return;
+      if(m.hideOnPlayerMap) return;
       var marker = L.marker([m.lat, m.lng], { icon: makeIcon(missionLabel(m, idx), false, isChestMission(m)) });
       marker._missionIndex = idx;
       marker._mission = m;
@@ -467,7 +468,7 @@
       markers[m.id] = marker;
     });
 
-    var withCoords = missions.filter(function(m){ return typeof m.lat === 'number' && typeof m.lng === 'number'; });
+    var withCoords = missions.filter(function(m){ return typeof m.lat === 'number' && typeof m.lng === 'number' && !m.hideOnPlayerMap; });
     if(withCoords.length){
       var group = L.featureGroup(withCoords.map(function(m){ return markers[m.id]; }));
       try{ map.fitBounds(group.getBounds().pad(0.25)); }catch(e){}
